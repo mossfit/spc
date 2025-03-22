@@ -19,3 +19,21 @@ CACHES = {
         }
     }
 }
+
+INSTALLED_APPS = [
+    # ... other apps ...
+    'channels',
+    'spc_app',
+]
+
+# Channels as the default backend
+ASGI_APPLICATION = "spc_project.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
