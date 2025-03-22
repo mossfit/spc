@@ -48,7 +48,6 @@ The system is built with a modular, scalable design:
 - **Containerization:** Docker and Docker Compose to package and deploy the entire stack.
 - **CI/CD & Monitoring:** GitHub Actions for continuous integration/deployment, with Prometheus, Grafana, and Sentry for monitoring and error tracking.
 
-![Architecture Diagram](https://via.placeholder.com/800x400?text=Secure+Prompt+Challenge+Architecture)
 
 ## Pipeline
 
