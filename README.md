@@ -50,7 +50,7 @@ The system is built with a modular, scalable design:
 
 ![Architecture Diagram](https://via.placeholder.com/800x400?text=Secure+Prompt+Challenge+Architecture)
 
-## Technology Stack
+## Pipeline
 
 - **Backend:** Python, Django, Django Channels
 - **Database:** PostgreSQL
@@ -223,3 +223,11 @@ Reverse Proxy & SSL:
 
 Cloud Deployment:
 - Deploy using your preferred cloud provider (AWS, GCP, or Heroku) with proper scaling and security configurations.
+
+Future Enhancements
+- Integrate advanced ML-based adversarial detection for prompt analysis.
+- Extend multi-language support for defense/attack prompts.
+- Develop a mobile companion app for real-time monitoring.
+- Add AI-driven recommendations to suggest prompt improvements.
+- Implement more interactive admin panels and granular reporting.
+
