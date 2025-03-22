@@ -5,6 +5,8 @@ from .models import Account, DefensePrompt, AttackPrompt, PromptLog
 from .services.llm_api import evaluate_prompt
 from .services.malware_detection import is_prompt_suspicious
 from django.contrib.auth.models import User
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 @csrf_exempt
 def submit_defense(request):
@@ -95,6 +97,15 @@ def submit_attack(request):
             "response": eval_result["response"]
         })
     return JsonResponse({"error": "Invalid HTTP method."}, status=405)
+
+channel_layer = get_channel_layer()
+async_to_sync(channel_layer.group_send)(
+    "dashboard_updates",
+    {
+        "type": "dashboard_update",
+        "message": "New attack prompt submitted; leaderboard updated."
+    }
+)
 
 @csrf_exempt
 def get_leaderboard(request):
