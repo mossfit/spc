@@ -32,6 +32,8 @@ class PromptLog(models.Model):
     response = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     context = models.CharField(max_length=50)  # e.g., "defense", "attack", "evaluation"
+    flagged = models.BooleanField(default=False)  # Whether the prompt was flagged as suspicious
 
     def __str__(self):
-        return f"Log [{self.context}] at {self.timestamp}"
+        return f"Log [{self.context}] at {self.timestamp} - Flagged: {self.flagged}"
+ 
