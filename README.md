@@ -27,7 +27,7 @@ Secure Prompt Challenge (SPC) is an interactive, web-based game designed to simu
   - Real-time scoring and leaderboard updates.
 
 - **Prompt Evaluation:**
-  - Integration with an LLM API (or simulation) to evaluate prompts.
+  - Integration with an LLM API to evaluate prompts.
   - Malware/anomaly detection to flag suspicious prompt patterns.
 
 - **Research Dashboard:**
@@ -229,4 +229,30 @@ Future Enhancements
 - Develop a mobile companion app for real-time monitoring.
 - Add AI-driven recommendations to suggest prompt improvements.
 - Implement more interactive admin panels and granular reporting.
-
+```pgsql
+      +------------------------------------------------+
+      |              Secure Prompt Challenge           |
+      |           Maintenance & Monitoring Layer       |
+      |------------------------------------------------|
+      |  - Real-time metrics (Prometheus, Grafana)       |
+      |  - Security auditing (OWASP ZAP, Burp Suite)     |
+      |  - Automated backups & patch management          |
+      |  - CI/CD with extended security & performance tests|
+      +-------------------+----------------------------+
+                          |
+                          v
+      +------------------------------------------------+
+      |        Application Layer (Django + Channels)    |
+      |  - API endpoints (game logic, aggregation)        |
+      |  - WebSocket updates for live dashboard            |
+      |  - Enhanced logging with PromptLog and Sentry      |
+      +-------------------+----------------------------+
+                          |
+                          v
+      +------------------------------------------------+
+      |    Data & Infrastructure (PostgreSQL, Redis)      |
+      |  - Persistent user/game data                      |
+      |  - Real-time cache for sessions and leaderboards  |
+      |  - Container orchestration (Docker/Kubernetes)    |
+      +------------------------------------------------+
+```
