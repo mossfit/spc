@@ -1,4 +1,5 @@
 # Secure Prompt Challenge (SPC)
+![alt text](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWJyNHMwcmtua3J1Zmg5c3NpcW9zdjN4MzludmtwOWlibG85dmd6ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bKj0qEKTVBdF2o5Dgn/giphy.gif)
 
 Secure Prompt Challenge (SPC) is an interactive, web-based game designed to simulate prompt injection attacks and defenses on large language models (LLMs). Players craft custom defense prompts to protect their virtual bank accounts, while adversaries submit attack prompts to bypass these defenses. This project also serves as a research platform, logging prompt interactions and detecting suspicious (malware-like) behaviors for further analysis.
 
