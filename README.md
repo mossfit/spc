@@ -151,7 +151,7 @@ secure-prompt-challenge/
 │   ├── public/
 │   │   └── dashboard.html     # HTML file for the interactive dashboard
 │   ├── tailwind.config.js     # Tailwind CSS configuration
-│   └── package.json           # (Optional) Node dependencies if needed
+│   └── package.json           # Node dependencies if needed
 ├── nginx/
 │   └── conf.d/
 │       └── default.conf       # Nginx configuration for reverse proxy and WebSocket support
