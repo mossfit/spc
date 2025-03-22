@@ -172,8 +172,7 @@ secure-prompt-challenge/
 *Environment Variables:*
 Configure sensitive settings (database credentials, Sentry DSN, etc.) using environment variables. You can create a .env file and use Django’s django-environ package to load them.
 
-**Running the Project**
-*Development Mode*
+## **Running the Project**  *(Development Mode)*
   -  Activate your virtual environment.
   -  **Run the Django development server:**
 ```bash
