@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Secure Prompt Challenge Dashboard</title>
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.7/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-4">
+    <h1 class="text-4xl font-bold text-center text-blue-700 mb-6">Secure Prompt Challenge Dashboard</h1>
+    
+    <!-- Metrics Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white p-6 rounded shadow" id="metrics-card">
+        <h2 class="text-2xl font-semibold mb-4">Game Metrics</h2>
+        <ul id="metrics-list" class="list-disc ml-5">
+          <!-- Dynamic metrics will be injected here -->
+        </ul>
+      </div>
+      
+      <!-- Leaderboard Section -->
+      <div class="bg-white p-6 rounded shadow" id="leaderboard-card">
+        <h2 class="text-2xl font-semibold mb-4">Leaderboard</h2>
+        <ul id="leaderboard-list" class="list-decimal ml-5">
+          <!-- Dynamic leaderboard will be injected here -->
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Charts Section -->
+    <div class="bg-white p-6 rounded shadow mt-8">
+      <h2 class="text-2xl font-semibold mb-4">Prompt Activity Overview</h2>
+      <canvas id="promptChart"></canvas>
+    </div>
+  </div>
+
+  <!-- JavaScript for AJAX and WebSocket integration -->
+  <script>
+    // Function to fetch metrics data
+    async function fetchMetrics() {
+      const response = await fetch('/dashboard/data/metrics/');
+      const data = await response.json();
+      const list = document.getElementById('metrics-list');
+      list.innerHTML = `
+        <li>Total Defense Prompts: ${data.total_defense_prompts}</li>
+        <li>Total Attack Prompts: ${data.total_attack_prompts}</li>
+        <li>Flagged Prompts: ${data.flagged_prompts}</li>
+        <li>Attack Success Rate: ${data.attack_success_rate.toFixed(2)}%</li>
+        <li>Average Account Balance: $${data.average_account_balance.toFixed(2)}</li>
+      `;
+    }
+
+    // Function to fetch leaderboard data
+    async function fetchLeaderboard() {
+      const response = await fetch('/dashboard/data/leaderboard/');
+      const data = await response.json();
+      const list = document.getElementById('leaderboard-list');
+      list.innerHTML = data.leaderboard.map((entry, index) => `<li>${entry.username} - $${entry.balance.toFixed(2)}</li>`).join('');
+    }
+
+    // Function to update the Chart.js chart with random sample data (to be replaced with real metrics)
+    function updateChart(chart) {
+      fetch('/dashboard/data/metrics/')
+        .then(response => response.json())
+        .then(data => {
+          // Simulated data: using total prompts over time (in real case, collect historical data)
+          chart.data.labels.push(new Date().toLocaleTimeString());
+          chart.data.datasets[0].data.push(data.total_attack_prompts);
+          if (chart.data.labels.length > 10) {
+            chart.data.labels.shift();
+            chart.data.datasets[0].data.shift();
+          }
+          chart.update();
+        });
+    }
+
+    // Initialize Chart.js
+    const ctx = document.getElementById('promptChart').getContext('2d');
+    const promptChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Total Attack Prompts',
+          data: [],
+          borderColor: 'rgba(66, 153, 225, 1)',
+          backgroundColor: 'rgba(66, 153, 225, 0.2)',
+          tension: 0.4,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: { title: { display: true, text: 'Time' } },
+          y: { title: { display: true, text: 'Count' } }
+        }
+      }
+    });
+
+    // Fetch data initially
+    fetchMetrics();
+    fetchLeaderboard();
+    // Update chart every 30 seconds
+    setInterval(() => updateChart(promptChart), 30000);
+
+    // WebSocket for real-time updates
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const dashboardSocket = new WebSocket(`${wsProtocol}://${window.location.host}/ws/dashboard/`);
+
+    dashboardSocket.onmessage = function(e) {
+      const data = JSON.parse(e.data);
+      console.log('Dashboard update:', data.message);
+      // Refresh metrics and leaderboard on update
+      fetchMetrics();
+      fetchLeaderboard();
+      updateChart(promptChart);
+    };
+  </script>
+</body>
+</html>
