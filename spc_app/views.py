@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from .models import Account, DefensePrompt, AttackPrompt, PromptLog
 from .services.llm_api import evaluate_prompt
+from .services.malware_detection import is_prompt_suspicious
 from django.contrib.auth.models import User
 
 @csrf_exempt
@@ -45,6 +46,24 @@ def submit_attack(request):
         
         # Evaluate the attack prompt against the defense prompt using our LLM API integration.
         eval_result = evaluate_prompt(defense.prompt_text, prompt_text)
+
+        flagged = is_prompt_suspicious(prompt_text)
+
+        attack = AttackPrompt.objects.create(
+            attacker=attacker_account,
+            target_defense=defense,
+            prompt_text=prompt_text,
+            successful=eval_result["successful"],
+            evaluation_response=eval_result["response"]
+        )
+
+        # Log the evaluation along with the flag status.
+        PromptLog.objects.create(
+            prompt=f"Defense: {defense.prompt_text} | Attack: {prompt_text}",
+            response=eval_result["response"],
+            context="evaluation",
+            flagged=flagged
+        )
         
         attack = AttackPrompt.objects.create(
             attacker=attacker_account,
